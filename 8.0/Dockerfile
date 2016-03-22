@@ -1,5 +1,6 @@
 FROM debian:jessie
-MAINTAINER Odoo S.A. <info@odoo.com>
+MAINTAINER Nueva gestion <contacto@nuevagestion.cl>
+ENV ODOO_VERSION 8.0
 
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
 RUN set -x; \
@@ -12,7 +13,7 @@ RUN set -x; \
             python-pyinotify \
             python-renderpm \
             python-support \
-        && curl -o wkhtmltox.deb -SL http://dev.nuevagestion.cl/odoo/8.0/wkhtmltox-0.12.1.2_linux-jessie-amd64.deb \
+        && curl -o wkhtmltox.deb -SL http://dev.nuevagestion.cl/odoo/${ODOO_VERSION}/wkhtmltox-0.12.1.2_linux-jessie-amd64.deb \
         && echo '40e8b906de658a2221b15e4e8cd82565a47d7ee8 wkhtmltox.deb' | sha1sum -c - \
         && dpkg --force-depends -i wkhtmltox.deb \
         && apt-get -y install -f --no-install-recommends \
@@ -20,10 +21,9 @@ RUN set -x; \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
 # Install Odoo
-ENV ODOO_VERSION 8.0
 ENV ODOO_RELEASE 20160204
 RUN set -x; \
-        curl -o odoo.deb -SL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
+        curl -o odoo.deb -SL http://dev.nuevagestion.cl/odoo/${ODOO_VERSION}/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
         && echo 'c19f6e7bba9b2e4dc4422398de8a3c20f2966749 odoo.deb' | sha1sum -c - \
         && dpkg --force-depends -i odoo.deb \
         && apt-get update \
